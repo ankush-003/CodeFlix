@@ -3,10 +3,17 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+// using cors to allow cross origin requests
+const cors = require('cors');
 // express app
 const app = express();
 const projectRoutes = require('./routes/projects');
-
+// access to cross origin requests
+app.use(cors({
+    origin: '*',
+    methods: ['GET','POST','PUT','DELETE','PATCH']
+}
+));
 // access to req.body
 app.use(express.json());
 // global middleware

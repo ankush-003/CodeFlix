@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
 import ProjectDetails from '../components/ProjectDetails';
-import ProjectForm from '../components/ProjectForm';
+// import ProjectForm from '../components/ProjectForm';
+
+const server = 'http://localhost:8000';
 const Home = () => {
     // States initialized to empty array
     const [projects, setProjects] = useState(null);
@@ -8,7 +10,10 @@ const Home = () => {
     useEffect(() => {
         console.log('useEffect ran');
         const fetchProjects = async () => {
-            const response = await fetch('/api/projects');
+            const response = await fetch(server + '/api/projects',{
+                method: 'GET',
+                mode: 'cors',
+            }).catch((err) => {console.log(err)});
             const json = await response.json();
             if(response.ok) {
                 setProjects(json);
