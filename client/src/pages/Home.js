@@ -25,7 +25,7 @@ const Home = () => {
     return (
         <>
         <div className="container-fluid-md m-3 px-4">
-                <h2 className='text-center fst-italic text-warning'><span className="typed">My Projects</span> <span className="typed-cursor">|</span> </h2>
+                <h2 className='text-center text-warning'><span className="typed display-6">My Projects</span> <span className="typed-cursor">|</span> </h2>
                 <div className="row g-0">
                 {projects ? projects.map((project) => 
                     (

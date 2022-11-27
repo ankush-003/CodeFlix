@@ -37,11 +37,11 @@ const getProject = async (req,res) => {
 
 // post a new project
 const createProject = async (req,res) => {
-    const {title, language, description, file} = req.body;
+    const {title, language, description, file, addFile} = req.body;
     // sending doc to db
     try {
         // using the project model to create a new project
-        const project = await Project.create({title, language, description, file});
+        const project = await Project.create({title, language, description, file, addFile});
         res.status(200).json({project});
     } catch (error) {
         res.status(400).json({error: error.message});

@@ -12,7 +12,7 @@ const Navbar = () => {
                 <a className="nav-link active text-warning" aria-current="page" href="/">Home</a>
                 </li>
                 <li className="nav-item">
-                <a className="nav-link" href="/">Workspace</a>
+                <Link className="nav-link" to="/workspace">Workspace</Link>
                 </li>
                 <li className="nav-item dropdown">
                 <Link className="nav-item btn link-warning" to="/newProject">

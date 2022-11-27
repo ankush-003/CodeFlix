@@ -18,6 +18,9 @@ const projectSchema = new Schema({
         type: String,
         required: true,
     },
+    addFile: {
+        type: String,
+    }
 }, { timestamps: true });
 // model built from schema
 // automatically pluralizes the model name
