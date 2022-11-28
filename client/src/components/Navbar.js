@@ -12,12 +12,17 @@ const Navbar = () => {
                 <a className="nav-link active text-warning" aria-current="page" href="/">Home</a>
                 </li>
                 <li className="nav-item">
-                <Link className="nav-link" to="/workspace">Workspace</Link>
+                <Link className="nav-link btn link-warning" to="/workspace">Workspace</Link>
                 </li>
                 <li className="nav-item dropdown">
                 <Link className="nav-item btn link-warning" to="/newProject">
                     Create +
                 </Link>
+                </li>
+                <li className="nav-item dropdown">
+                    <Link className="nav-item btn link-warning" to="/timer">
+                        Timer
+                    </Link>
                 </li>
             </ul>
             <form className="d-flex">

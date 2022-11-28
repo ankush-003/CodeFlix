@@ -1,11 +1,14 @@
 import React from 'react'
-import {useEffect} from 'react';
+// import {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import copy from '../assets/copy.png'
-
+import {useProjectsContext} from '../hooks/useProjectsContext';
+// date-fns is used to format the date we receive from MongoDB
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
 export default function ProjectDetails({project}) {
   let text = project.file
+  const { dispatch } = useProjectsContext();
   const copyContent = async () => {
     try {
       await navigator.clipboard.writeText(text);
@@ -14,13 +17,23 @@ export default function ProjectDetails({project}) {
       console.error('Failed to copy: ', err);
     }
   }
-  useEffect(() => {
-    const timer = setTimeout(() => console.log("Hello, World!"), 3000);
-    return () => clearTimeout(timer);
-  }, []);
   const navigate = useNavigate();
   const handleEdit = () => {
     navigate('/workspace', {state: project})
+  }
+  const handleDelete = async () => {
+    const response = await fetch(`http://localhost:8000/api/projects/${project._id}`, {
+      method: 'DELETE',
+      mode: 'cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    })
+    const data = await response.json()
+    if (response.ok) {
+        dispatch({type: 'DELETE_PROJECT', payload: data})
+        // window.location.reload(false);
+    }
   }
   return (
     <div className="card text-white bg-dark border-warning m-3 col-8 shadow rounded" style={{maxWidth: "20rem"}}>
@@ -35,10 +48,18 @@ export default function ProjectDetails({project}) {
             <p className="card-text">Language: {project.language}</p>
             <p className="card-text mb-2" style={{height:'5rem'}}>Description: {project.description}</p>
             <p className="card-text">Additional Files: {project.addFile}</p>
-            <p className="card-text mb-3">Created on: {project.createdAt}</p>
-            <div className="d-grid gap-2 d-block  mt-2">
+            <p className="card-text mb-3">Created: {formatDistanceToNow(new Date(project.createdAt),{addSuffix: true})}</p>
+            {/* <div className="d-grid gap-2 d-block  mt-2">
                 <input type="button" value="Edit" onClick={()=> {handleEdit()}} className="btn btn-outline-warning btn-lg align-self-center" />
-            </div>  
+            </div>   */}
+            <div className="row justify-content-center">
+            <button className='btn btn-outline-warning btn-sm col-4 m-2' onClick={()=> {handleEdit()}} >
+              <span className='material-symbols-outlined'>Edit</span>
+            </button>
+            <button className='btn btn-outline-danger btn-sm col-4 m-2' onClick={handleDelete} >
+              <span className='material-symbols-outlined'>delete</span>
+            </button>
+            </div>
         </div>
         
     </div>

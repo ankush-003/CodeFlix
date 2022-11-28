@@ -1,12 +1,15 @@
 import { useState } from "react"
+import { useProjectsContext } from "../hooks/useProjectsContext"
 
 const ProjectForm = () => {
+    const { dispatch } = useProjectsContext();
     const [title, setTitle] = useState('');
     const [file, setFile] = useState('');
     const [language, setLanguage] = useState('');
     const [description, setDescription] = useState('');
     const [addFile, setAddFile] = useState('');
     const [error, setError] = useState('');
+    const [emptyFields, setEmptyFields] = useState([]);
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newProject = {title, file, language, description, addFile};
@@ -21,6 +24,7 @@ const ProjectForm = () => {
         const json = await response.json();
         if(!response.ok) {
             setError(json.error);
+            setEmptyFields(json.emptyFields);
         }
         if(response.ok) {
             setTitle('');
@@ -29,9 +33,10 @@ const ProjectForm = () => {
             setDescription('');
             setAddFile('');
             setError(null);
+            setEmptyFields([]);
             console.log("new project created");
             console.table(json);
-
+            dispatch({type: 'CREATE_PROJECT', payload: json});
         }
     }
     return (
@@ -76,7 +81,11 @@ const ProjectForm = () => {
                         <input type="submit" value="Upload" className="btn btn-outline-warning btn-lg align-self-center" />
                       </div>                   
             </form>
-            {error && <div className="alert alert-danger">{error}</div>}
+            {error && <div className="alert alert-danger">{error} missing fields: {
+                emptyFields.map((field, index) => {
+                    return <span className="fs-4 m-1" key={index}>{field}</span>
+                })
+            }</div>}
         </div>
     ) 
 }

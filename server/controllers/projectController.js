@@ -38,6 +38,24 @@ const getProject = async (req,res) => {
 // post a new project
 const createProject = async (req,res) => {
     const {title, language, description, file, addFile} = req.body;
+
+    let emptyFields = [];
+    if(!title) {
+        emptyFields.push('title');
+    }
+    if(!language) {
+        emptyFields.push('language');
+    }
+    if(!description) {
+        emptyFields.push('description');
+    }
+    if(!file) {
+        emptyFields.push('file');
+    }
+    
+    if(emptyFields.length > 0) {
+        return res.status(400).json({error: 'Please fill in all the fields', emptyFields});
+    }
     // sending doc to db
     try {
         // using the project model to create a new project
