@@ -8,6 +8,8 @@ const cors = require('cors');
 // express app
 const app = express();
 const projectRoutes = require('./routes/projects');
+const userRoutes = require('./routes/user');
+
 // access to cross origin requests
 app.use(cors({
     origin: '*',
@@ -25,6 +27,7 @@ app.use((req,res,next) => {
 
 // routes
 app.use('/api/projects',projectRoutes);
+app.use('/api/user',userRoutes);
 // connect to db, returns a promise
 mongoose.connect(process.env.MONGO_URI)
 .then((result) => {
