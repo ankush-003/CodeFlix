@@ -40,5 +40,22 @@ userSchema.statics.signup = async function(email, password) {
     const user = await this.create({email, password: hash});
     return user;
 }
+// static login method
+userSchema.statics.login = async function(email, password) {
+    // validation
+    if(!email || !password) {
+        throw Error('Email and password are required!');
+    }
 
+    const user = await this.findOne({email});
+    if(!user) {
+        throw Error('Incorrect email!');
+    }
+    // user.password is the hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if(!isMatch) {
+        throw Error('Incorrect password!');
+    }
+    return user;
+}
 module.exports = mongoose.model('User', userSchema);
